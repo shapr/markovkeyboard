@@ -9,3 +9,14 @@ For example, if you type only "the" all day, then when you press the letter 't' 
 
 # how do I type?
 There are minor challenges involved if your keyboard layout could change with every keypress, thus this prototype is an emacs library that display the current layout at the bottom of the screen.
+
+
+# does it work?
+
+nope
+
+# what needs to be done?
+
+[ ] define a new input-method for markov
+
+[ ] display the keyboard layout when enabling the mode
