@@ -10,16 +10,18 @@
 
 (defun bag-interpolate (weight-1 bag-1 weight-2 bag-2)
   "Return a linear combination of two frequency tables."
-  (let ((total-1 (bag--total bag-1))
-        (total-2 (bag--total bag-2))
-        (keys (union (bag--keys bag-1) (bag--keys bag-2))))
-    (let ((pairs (loop for key in keys
-                       collect `(,key ,(+ (* (/ weight-1 (+ weight-1 weight-2))
-                                             (/ (bag--get bag-1 key) total-1))
-                                          (* (/ weight-2 (+ weight-1 weight-2))
-                                             (/ (bag--get bag-2 key) total-2)))))))
-      (sort pairs (lambda (p q)
-                    (< (cadr p) (cadr q)))))))
+  (let ((total-1 (float (bag--total bag-1)))
+        (total-2 (float (bag--total bag-2))))
+    (cond ((= total-1 0) bag-2)
+          ((= total-2 0) bag-1)
+          (t (let ((scale-1 (/ weight-1 (+ weight-1 weight-2) total-1))
+                   (scale-2 (/ weight-2 (+ weight-1 weight-2) total-2))
+                   (keys (union (bag--keys bag-1) (bag--keys bag-2))))
+               (let ((pairs (loop for key in keys
+                                  collect `(,key ,(+ (* scale-1 (bag--get bag-1 key))
+                                                     (* scale-2 (bag--get bag-2 key)))))))
+                 (sort pairs (lambda (p q)
+                               (< (cadr p) (cadr q))))))))))
 
 (defun bag--keys (bag)
   "Set of keys of a bag."
