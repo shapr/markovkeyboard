@@ -10,7 +10,7 @@ def main(argv):
     trainer = Stats()
     for filename in sys.argv[1:]:
         with open(filename) as f:
-            trainer.train(f.read())
+            trainer.train(f.read().lower())
     with open('freqs', 'w') as f:
         trainer.dump(f)
 
