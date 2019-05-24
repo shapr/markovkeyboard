@@ -5,14 +5,21 @@ sorted by frequency descending.
 """
 
 from collections import Counter
-
 def main(argv):
+    real_filenames = argv[1:]
+    real_main(real_filenames)
+
+def real_main(real_filenames):
     trainer = Stats()
-    for filename in sys.argv[1:]:
+    for filename in real_filenames:
+        print("filename is ", filename)
+        print("sys.argv is", sys.argv)
         with open(filename) as f:
             trainer.train(f.read().lower())
+    trainer.filter_alpha()
     with open('freqs', 'w') as f:
         trainer.dump(f)
+    return trainer
 
 class Stats(object):
     def __init__(self):
@@ -29,19 +36,34 @@ class Stats(object):
                 self.bigrams[previous] = Counter()
             self.bigrams[previous].update(c)
             previous = c
-    def dump(self, file):
-        print format_counter(self.unigrams)
-        print format_alist((str(ord(ch)), format_counter(counter))
-                           for (ch,counter) in self.bigrams.items())
+    def dump(self, f):
+        f.write(format_counter(self.unigrams))
+        f.write(format_alist((str(ord(ch)), format_counter(counter))
+                             for (ch, counter) in self.bigrams.items()))
+    # remove anything that isn't a-z (for this prototype)
+    def filter_alpha(self):
+        for k in self.unigrams.keys():
+            if not k.isalpha():
+                del self.unigrams[k]
+        print sorted(self.unigrams.keys()) # did it work?
+        for k in self.bigrams.keys():
+            if not k.isalpha():
+                del self.bigrams[k]
+                continue
+            for sk in self.bigrams[k].keys():
+                if not sk.isalpha():
+                    del self.bigrams[k][sk]
+        print sorted(self.bigrams.keys())
 
 def format_counter(counter):
     return '(%s)' % ' '.join('(%d %d)' % (ord(ch), n)
-                             for (ch,n) in counter.most_common())
+                             for (ch, n) in counter.most_common())
 
 def format_alist(pairs):
     return '(%s)' % ' '.join('(%s %s)' % pair for pair in pairs)
 
-
+#def format_simple(pairs):
+#    return
 if __name__ == '__main__':
     import sys
     main(sys.argv)
