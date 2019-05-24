@@ -108,6 +108,6 @@ Good luck, you'll need it.
 ;; looks like you send in the list of this: ("a" . myfunction)
 ;; the docs imply that myfunction is then called with "a", after the
 ;; but is the TRANSLATION inserted into the buffer before handed to the function?
-(defun quail-function (k interactive)
-  ?a
-  )
+;; (defun quail-function (k interactive)
+;;   ?a
+;;   )
