@@ -37,8 +37,9 @@ class Stats(object):
             self.bigrams[previous].update(c)
             previous = c
     def dump(self, f):
-        f.write(format_counter(self.unigrams))
-        f.write(format_alist((str(ord(ch)), format_counter(counter))
+        f.write(format_bag(self.unigrams))
+        f.write('\n')
+        f.write(format_alist((elisp_char(ch), format_bag(counter))
                              for (ch, counter) in self.bigrams.items()))
     # remove anything that isn't a-z (for this prototype)
     def filter_alpha(self):
@@ -55,12 +56,15 @@ class Stats(object):
                     del self.bigrams[k][sk]
         print sorted(self.bigrams.keys())
 
-def format_counter(counter):
-    return '(%s)' % ' '.join('(%d %d)' % (ord(ch), n)
-                             for (ch, n) in counter.most_common())
-
 def format_alist(pairs):
     return '(%s)' % ' '.join('(%s %s)' % pair for pair in pairs)
+
+def format_bag(counter):
+    return format_alist((elisp_char(ch), n)
+                        for (ch, n) in counter.most_common())
+
+def elisp_char(ch):
+    return '?' + ch if ch.isalpha() else str(ord(ch))
 
 #def format_simple(pairs):
 #    return
