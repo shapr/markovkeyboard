@@ -30,7 +30,7 @@
 ;; Haskell -> filter (`elem` key-accessibility) unigram-frequency
 ;; this is how you define an input-method
 
-(defun init-markov (interactive)
+(defun init-markov () (interactive)
   (require 'quail)
   (quail-define-package
    "markov-insanity" "Latin-1" "(╯°□°）╯" t
@@ -42,7 +42,7 @@ Good luck, you'll need it.
   ;; default keymap is no change
   (quail-define-rules
    ("a" ?a)
-   ("b" quail-function)
+   ("b" 'my-quail-function)
    ("c" ?c)
    ("d" ?d)
    ("e" ?e)
@@ -95,19 +95,44 @@ Good luck, you'll need it.
    )
   )
 
-(defun start-markov (interactive)
+(defun start-markov () (interactive)
   (set-input-method "markov-insanity"))
 
 (defun remap (keymap)
   ;; is this it?
   (-zip-with 'quail-define-rules 'key-accessibility 'keymap)
   )
-
+;; keymap is a dictionary from letter to new keymap
 
 ;; reading quail-define-rules several times, there's the option to pass a function
 ;; looks like you send in the list of this: ("a" . myfunction)
 ;; the docs imply that myfunction is then called with "a", after the
 ;; but is the TRANSLATION inserted into the buffer before handed to the function?
-;; (defun quail-function (k interactive)
-;;   ?a
-;;   )
+;; quail-lookup-key: Wrong number of arguments: (lambda nil ("a" "thisisaquailmap")), 2
+(defun my-quail-function (a b)
+  (
+   (?a . "foo")
+   (?b . "bar")
+   ) ; valid quail map)
+  )
+
+(init-markov)
+
+(quail-map-p '((?a "foo")))
+
+(define-key buffer-map ?a
+  (progn
+    self-insert "a"
+    (quail-define-rules (remap "a"))
+    ))
+(message (fboundp 'my-quail-function))
+(message (null quail-current-package))
+(local-set-key ?x (self-insert-command ?x))
+
+(self-insert-command 1)
+
+(local-set-key (kbd "a") '(self-insert-command 1))
+
+'(progn
+   (message "hi there")
+   (self-insert-command 1))
