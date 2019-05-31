@@ -31,6 +31,7 @@ bind_template = """
 (local-set-key (kbd "%s") '(lambda () (interactive)
                             (set-input-method "markov-insanity-%s")
                             (self-insert-command 1)
+                            (quail-show-keyboard-layout)
                             )
                )
 """
