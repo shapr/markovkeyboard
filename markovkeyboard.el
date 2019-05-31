@@ -1,5 +1,9 @@
 ;; markovkeyboard.el -- change your layout as you type to move most used keys to the home row!
 
+;; this file is a bunch of elisp experiments, all the actual code is now generated from crunch_freqs.py
+
+
+
 ;; Author: Shae Erisson <shae+markeyb@ScannedInAvian.com>
 ;; Author: Darius Bacon
 
@@ -8,7 +12,7 @@
 ;; home keys from the pointer finger to pinky, then keys between,
 ;; then keys above in the same order
 ;; then keys below in the same order
-(defvar key-accessibility "fjdkslaghrueiwoqptyvncmxzb") ; this is for qwerty
+(defvar key-accessibility "fjdkslaghrueiwoqptyvncmxzb") ; this is for qwerty, not sure how to handle dvorak
 ;; this somewhat arbitrary order is chosen so it's easy to map the frequency onto keyboard keys
 
 (defvar keymap-default "fjdkslaghrueiwoqptyvncmxzb")
@@ -42,7 +46,7 @@ Good luck, you'll need it.
   ;; default keymap is no change
   (quail-define-rules
    ("a" ?a)
-   ("b" 'my-quail-function)
+   ("b" ?b)
    ("c" ?c)
    ("d" ?d)
    ("e" ?e)
@@ -57,7 +61,7 @@ Good luck, you'll need it.
    ("n" ?n)
    ("o" ?o)
    ("p" ?p)
-   ("q" ?q) ;; also 0 0 -> first list, first element
+   ("q" ?q)
    ("r" ?s)
    ("t" ?t)
    ("u" ?u)
@@ -136,3 +140,10 @@ Good luck, you'll need it.
 '(progn
    (message "hi there")
    (self-insert-command 1))
+
+;; this works!
+(local-set-key (kbd "z") '(lambda () (interactive)
+			    (set-input-method "markov-z")
+			    (self-insert-command 1)
+			    )
+	       )

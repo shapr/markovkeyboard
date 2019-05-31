@@ -44,12 +44,11 @@ def real_main(real_filenames):
     trainer = Stats()
     for filename in real_filenames:
         print("filename is ", filename)
-        print("sys.argv is", sys.argv)
         with open(filename) as f:
             trainer.train(f.read().lower())
     trainer.filter_alpha()
-    with open('freqs', 'w') as f:
-        trainer.dump(f)
+    # with open('freqs', 'w') as f:
+    #     trainer.dump(f)
     trainer.write_everything()
     return trainer
 
@@ -109,12 +108,13 @@ class Stats(object):
         f.write("(require 'quail)") # we'll need this
         f.write('\n'.join(all_methods))
         f.write('\n'.join(all_binds))
+        print("wrote markov-all.el")
 
     def filter_alpha(self):
         for k in self.unigrams.keys():
             if not k.isalpha():
                 del self.unigrams[k]
-        print sorted(self.unigrams.keys()) # did it work?
+        # print sorted(self.unigrams.keys()) # did it work?
         for k in self.bigrams.keys():
             if not k.isalpha():
                 del self.bigrams[k]
@@ -122,7 +122,7 @@ class Stats(object):
             for sk in self.bigrams[k].keys():
                 if not sk.isalpha():
                     del self.bigrams[k][sk]
-        print sorted(self.bigrams.keys())
+        # print sorted(self.bigrams.keys())
 
 def format_alist(pairs):
     return '(%s)' % ' '.join('(%s %s)' % pair for pair in pairs)
