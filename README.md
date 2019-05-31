@@ -1,7 +1,7 @@
 # markovkeyboard
 keyboard layout that changes by markov frequency
 
-[screenshot](screenshot.png)
+![screenshot](screenshot.png)
 
 # the big idea
 Static keyboard layouts are boring and predictable. Let's spice up the whole idea of keyboard layouts by having the layout *CHANGE WHILE YOU ARE TYPING*!
