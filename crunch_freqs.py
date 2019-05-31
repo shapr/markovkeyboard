@@ -29,7 +29,7 @@ Good luck, you'll need it.
 # needs two binds "a" and "A" but there's only one markov-a input-method
 bind_template = """
 (local-set-key (kbd "%s") '(lambda () (interactive)
-                            (set-input-method "markov-%s")
+                            (set-input-method "markov-insanity-%s")
                             (self-insert-command 1)
                             )
                )
