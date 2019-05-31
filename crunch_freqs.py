@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Collect unigram and bigram statistics from a corpus of text.
 Write out the data in an ELisp-friendly association-list format,
@@ -9,21 +11,20 @@ from collections import Counter
 
 frequency = "fjdkslaghrueiwoqptyvncmxzb"
 
-element_template = """("%s" ?%s)"""
+element_template = """ ("%s" ?%s)"""
 
 # two parameters, letter 'a' and a string of pairs like this: ("a" ?a) ("A" ?A)
 method_template = """
-  (quail-define-package
-   "markov-insanity-%s" "Latin-1" "(╯°□°）╯" t
-   "Markov (Insanity) input method (rule: make your own)
+(quail-define-package
+ "markov-insanity-%s" "Latin-1" "(╯°□°）╯" t
+ "Markov (Insanity) input method (rule: make your own)
 
 Good luck, you'll need it.
 " nil t nil nil nil nil nil nil nil nil t)
 
-  ;; default keymap is no change
-  (quail-define-rules
+(quail-define-rules
      %s
-   )
+)
 """
 # needs two binds "a" and "A" but there's only one markov-a input-method
 bind_template = """
@@ -49,6 +50,7 @@ def real_main(real_filenames):
     trainer.filter_alpha()
     with open('freqs', 'w') as f:
         trainer.dump(f)
+    trainer.write_everything()
     return trainer
 
 
