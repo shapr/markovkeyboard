@@ -9,7 +9,7 @@ sorted by frequency descending.
 
 from collections import Counter
 
-frequency = "fjdkslaghrueiwoqptyvncmxzb"
+key_accessibility = "fjdkslaghrueiwoqptyvncmxzb"
 
 element_template = """ ("%s" ?%s)"""
 
@@ -76,8 +76,6 @@ class Stats(object):
         f.write(format_alist((elisp_char(ch), format_bag(counter))
                              for (ch, counter) in self.bigrams.items()))
     # remove anything that isn't a-z (for this prototype)
-    # def get_unigram(self):
-    #     for k in self.unigrams.keys():
 
     # return letters in order of total frequency
     def unis(self):
@@ -88,10 +86,10 @@ class Stats(object):
 
     def total_frequency(self,char):
         char_bigs = self.bigs(char)
-        filtered_unis = [char for char in self.unis() if char not in char_bigs]
-        return char_bigs + filtered_unis
+        missing_bigs = [char for char in self.unis() if char not in char_bigs]
+        return char_bigs + missing_bigs
     def get_input_method(self, char):
-        total_pairs = zip(frequency, self.total_frequency(char)) # produces list like [('f', 'e'), ('j', 'i'), ('d', 'z'), ('k', 'l'), ('s', 'a'), ('l', 'o'),]
+        total_pairs = zip(key_accessibility, self.total_frequency(char)) # produces list like [('f', 'e'), ('j', 'i'), ('d', 'z'), ('k', 'l'), ('s', 'a'), ('l', 'o'),]
         mapped_pairs = [ element_template % (a,b) for (a,b) in total_pairs]
         mapped_pairs += [ element_template % (a.upper(),b.upper()) for (a,b) in total_pairs] # upper case too!
         mapped_pairs_string = '\n'.join(mapped_pairs)
