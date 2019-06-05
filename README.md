@@ -19,9 +19,13 @@ Pretty much! It only remaps the letters from a-zA-Z, but it does work!
 
 # how do I make it go?
 
-Download a plain text file for training the markov chain, then run "python crunch_freqs.py filename.txt" and that will generate a markov-all.el file that you can use with load-library.
+Use the pre-trained markov-all.el with M-x load-file then type in /path/to/markovkeyboard/markov-all.el
 
 After that, use M-x set-input-method and choose markov-insanity-a or replace a with any letter you prefer!
+
+If you want a different set of 26 keymaps:
+
+Download a plain text file for training the markov chain, then run "python crunch_freqs.py filename.txt" and that will generate a markov-all.el file that you can use with M-x load-file .
 
 # how do I make it stop?
 
